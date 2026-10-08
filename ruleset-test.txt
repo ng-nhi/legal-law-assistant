@@ -1,0 +1,3 @@
+GitHub Ruleset Test
+Project: legal-law-assistant
+Branch: feature/rag
