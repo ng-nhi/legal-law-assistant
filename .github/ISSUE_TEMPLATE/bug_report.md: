@@ -1,0 +1,26 @@
+
+---
+name: Bug report
+about: Báo lỗi trong dự án
+title: "[BUG] "
+labels: bug
+assignees: ""
+---
+
+## Mô tả lỗi
+Điều gì đã xảy ra?
+
+## Các bước tái hiện
+1.
+2.
+3.
+
+## Kết quả thực tế
+
+## Kết quả mong đợi
+
+## Môi trường
+Phiên bản, nhánh, hệ điều hành hoặc thông tin liên quan:
+
+## Bằng chứng
+Log hoặc ảnh chụp màn hình đã loại bỏ thông tin bí mật.
