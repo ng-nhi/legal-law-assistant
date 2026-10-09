@@ -1,0 +1,122 @@
+# Kiến trúc hệ thống Legal Law Assistant
+
+## 1. Giới thiệu
+
+Legal Law Assistant là hệ thống trợ lý hỗ trợ tra cứu thông tin pháp luật. Hệ thống hướng đến việc tiếp nhận câu hỏi của người dùng, tìm kiếm văn bản pháp luật liên quan, xây dựng câu trả lời dựa trên nguồn được truy xuất và cung cấp thông tin trích dẫn để người dùng kiểm tra lại.
+
+Hệ thống dự kiến sử dụng mô hình Retrieval-Augmented Generation (RAG), Agent và Citation Validator. Việc triển khai cụ thể phụ thuộc vào code và công nghệ được nhóm thống nhất.
+
+## 2. Các thành phần chính
+
+### 2.1. Frontend
+
+Frontend là giao diện tương tác với người dùng.
+
+Nhiệm vụ:
+- Tiếp nhận câu hỏi pháp luật.
+- Gửi câu hỏi đến Backend.
+- Hiển thị câu trả lời và thông tin nguồn trích dẫn khi Backend cung cấp.
+- Hiển thị trạng thái xử lý hoặc thông báo lỗi phù hợp.
+
+Thư mục: `frontend/`
+
+Công nghệ cụ thể: cập nhật theo công nghệ nhóm thực sự sử dụng, ví dụ React hoặc Next.js.
+
+### 2.2. Backend
+
+Backend tiếp nhận yêu cầu từ Frontend, kiểm tra dữ liệu đầu vào và điều phối quá trình xử lý câu hỏi.
+
+Nhiệm vụ dự kiến:
+- Cung cấp API cho Frontend.
+- Kiểm tra dữ liệu yêu cầu.
+- Gọi thành phần RAG hoặc Agent.
+- Trả kết quả cho Frontend.
+- Xử lý lỗi và ghi log phù hợp.
+
+Thư mục: `backend/`
+
+Công nghệ dự kiến: Python và FastAPI, nếu đúng với lựa chọn triển khai của nhóm.
+
+### 2.3. RAG và truy xuất tài liệu
+
+RAG (Retrieval-Augmented Generation) kết hợp truy xuất tài liệu với quá trình tạo câu trả lời.
+
+Các bước xử lý dự kiến:
+1. Chuẩn bị và làm sạch tài liệu pháp luật.
+2. Chia tài liệu thành các đoạn nhỏ (chunking).
+3. Tạo embedding cho các đoạn tài liệu.
+4. Lưu trữ vector và metadata.
+5. Truy xuất các đoạn có liên quan đến câu hỏi.
+6. Chuyển kết quả truy xuất sang thành phần tạo câu trả lời.
+
+Thư mục: `rag/`
+
+Cơ sở dữ liệu vector: sử dụng Qdrant nếu được nhóm lựa chọn và cấu hình thực tế.
+
+### 2.4. Agent
+
+Agent điều phối các bước xử lý cần thiết để trả lời câu hỏi. Tùy thiết kế của nhóm, Agent có thể lựa chọn công cụ, gọi thành phần truy xuất và chuyển kết quả qua bước kiểm tra.
+
+Thư mục: `agent/`
+
+Framework và luồng xử lý cụ thể cần được cập nhật theo code thực tế, chẳng hạn LangGraph nếu nhóm sử dụng.
+
+### 2.5. Citation Validator
+
+Citation Validator kiểm tra thông tin trích dẫn được tạo ra trong câu trả lời.
+
+Các kiểm tra dự kiến:
+- Trích dẫn có thông tin nguồn hay không.
+- Nguồn có tồn tại trong kết quả truy xuất hoặc kho tài liệu được phép sử dụng hay không.
+- Thông tin điều khoản, điều luật và nội dung dẫn chiếu có khớp với dữ liệu nguồn hay không, trong phạm vi hệ thống có thể xác minh.
+- Đánh dấu các trích dẫn thiếu căn cứ hoặc không xác minh được.
+
+Citation Validator không được xem là bảo đảm tuyệt đối rằng mọi nội dung pháp lý đều chính xác. Những nội dung chưa xác minh được cần được thể hiện rõ.
+
+Vị trí triển khai: cập nhật theo cách nhóm tổ chức code, có thể thuộc `agent/` hoặc một module riêng.
+
+### 2.6. Kho dữ liệu
+
+Kho dữ liệu dùng để tổ chức tài liệu đầu vào và hướng dẫn quy trình chuẩn bị dữ liệu.
+
+Thư mục: `data/`
+
+Không đưa khóa API, mật khẩu, thông tin cá nhân nhạy cảm hoặc dữ liệu có bản quyền chưa được phép chia sẻ lên repository công khai.
+
+### 2.7. Kiểm thử
+
+Thư mục `tests/` lưu các bài kiểm thử cho các thành phần của hệ thống.
+
+Các nhóm kiểm thử dự kiến:
+- Kiểm thử xử lý đầu vào và API.
+- Kiểm thử truy xuất tài liệu.
+- Kiểm thử Agent.
+- Kiểm thử Citation Validator.
+- Kiểm thử tích hợp giữa các thành phần.
+
+## 3. Luồng xử lý tổng quát
+
+1. Người dùng nhập câu hỏi trên Frontend.
+2. Frontend gửi yêu cầu đến Backend.
+3. Backend kiểm tra yêu cầu và chuyển đến luồng xử lý phù hợp.
+4. Thành phần RAG truy xuất các đoạn tài liệu pháp luật liên quan.
+5. Agent điều phối việc sử dụng kết quả truy xuất và tạo câu trả lời theo thiết kế của hệ thống.
+6. Citation Validator kiểm tra các thông tin trích dẫn theo những quy tắc đã triển khai.
+7. Backend trả kết quả về Frontend.
+8. Frontend hiển thị câu trả lời và thông tin nguồn cho người dùng.
+
+Luồng trên là kiến trúc mục tiêu. Cần đối chiếu với code triển khai để xác nhận thứ tự gọi thực tế.
+
+## 4. Nguyên tắc thiết kế
+
+- Tách biệt trách nhiệm giữa các thành phần.
+- Không đưa thông tin bí mật vào Git.
+- Có thể kiểm thử từng thành phần độc lập.
+- Quản lý thay đổi thông qua branch và Pull Request.
+- Ghi nhận lỗi và kết quả kiểm thử.
+- Ưu tiên câu trả lời có căn cứ nguồn; không khẳng định chắc chắn khi dữ liệu không đủ.
+- Cập nhật tài liệu khi kiến trúc hoặc công nghệ thay đổi.
+
+## 5. Trạng thái triển khai
+
+Tài liệu này mô tả kiến trúc mục tiêu. Các công nghệ, endpoint, cấu hình triển khai và kết quả kiểm thử chỉ được đánh dấu là đã hoàn thành sau khi được xác nhận từ code hoặc môi trường chạy thực tế.
