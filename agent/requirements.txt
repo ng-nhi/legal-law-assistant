@@ -1,0 +1,21 @@
+cat > requirements.txt << 'EOF'
+# ===== Core =====
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# ===== LangChain / LangGraph =====
+langchain>=0.3.0
+langchain-core>=0.3.0
+langgraph>=0.2.0
+
+# ===== Google Gemini =====
+langchain-google-genai>=2.0.0
+google-genai>=1.0.0
+
+# ===== Vector DB =====
+langchain-qdrant>=0.1.0
+qdrant-client>=1.9.0
+
+# ===== Utilities =====
+urllib3<2
+EOF
